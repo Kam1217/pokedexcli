@@ -23,4 +23,7 @@ func main() {
 		argWords := cleanInput(arg)
 		fmt.Println("Your command was:", argWords[0])
 	}
+    if err := scanner.Err(); err != nil {
+        fmt.Fprintln(os.Stderr, "error:", err)
+    }
 }
