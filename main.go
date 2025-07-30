@@ -1,21 +1,26 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strings"
 )
 
-func cleanInput(text string) []string{
-	/*
-	The purpose of this function will be to split the user's input into "words" based on whitespace. 
-	It should also lowercase the input and trim any leading or trailing whitespace.
-	*/
+func cleanInput(text string) []string {
+
 	lowerStr := strings.TrimSpace(strings.ToLower(text))
 	words := strings.Fields(lowerStr)
-	
+
 	return words
 }
 
-func main(){
-	fmt.Println("Hello, World!")
+func main() {
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		fmt.Print("Pokedex >")
+		arg := scanner.Text()
+		argWords := cleanInput(arg)
+		fmt.Println("Your command was:", argWords[0])
+	}
 }
