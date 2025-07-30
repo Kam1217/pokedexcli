@@ -22,8 +22,9 @@ func main() {
 		arg := scanner.Text()
 		argWords := cleanInput(arg)
 		fmt.Println("Your command was:", argWords[0])
+		fmt.Print("Pokedex > ")
 	}
-    if err := scanner.Err(); err != nil {
-        fmt.Fprintln(os.Stderr, "error:", err)
-    }
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, "error:", err)
+	}
 }
