@@ -15,6 +15,12 @@ func cleanInput(text string) []string {
 	return words
 }
 
+func commandExit() error {
+	fmt.Print("Closing the Pokedex...Goodbye!")
+	os.Exit(0)
+	return nil
+}
+
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Print("Pokedex > ")
