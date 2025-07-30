@@ -20,3 +20,8 @@ func commandHelp() error {
 	}
 	return nil
 }
+
+func commandMap() error{
+	fmt.Println("Will display 20 pokemon locations")
+	return nil
+}
