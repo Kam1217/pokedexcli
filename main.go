@@ -22,7 +22,7 @@ func cleanInput(text string) []string {
 }
 
 func commandExit() error {
-	fmt.Print("Closing the Pokedex...Goodbye!")
+	fmt.Println("Closing the Pokedex...Goodbye!")
 	os.Exit(0)
 	return nil
 }
@@ -38,23 +38,27 @@ func main() {
 
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Welcome to Pokedex!")
-	fmt.Print("Pokedex > ")
 	for scanner.Scan() {
 		input := scanner.Text()
 		args := cleanInput(input)
 
 		if len(input) == 0{
-			fmt.Print("Pokedex > ")
 			continue
 		}
 		
-		_, ok := commands[args[0]]
+		cmd, ok := commands[args[0]]
 		if !ok {
 			fmt.Println("Unknown command")
 			continue
 		}
+
+		err := cmd.callback() 
+		if err != nil{
+			fmt.Println("Error: ", err.Error())
+			continue
+		}
 		
-		fmt.Print("Pokedex > ")
+		
 	}
 	
 	if err := scanner.Err(); err != nil {
