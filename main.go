@@ -7,6 +7,12 @@ import (
 	"strings"
 )
 
+type cliCommand struct {
+	name string
+	description string
+	callback func() error		
+}
+
 func cleanInput(text string) []string {
 
 	lowerStr := strings.TrimSpace(strings.ToLower(text))
@@ -22,6 +28,7 @@ func commandExit() error {
 }
 
 func main() {
+
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Print("Pokedex > ")
 	for scanner.Scan() {
