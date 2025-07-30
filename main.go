@@ -28,15 +28,35 @@ func commandExit() error {
 }
 
 func main() {
+	commands := map[string]cliCommand{
+		"exit": {
+			name: "exit",
+			description: "Exit the Pokedex",
+			callback: commandExit,
+		},
+	}
 
 	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Println("Welcome to Pokedex!")
 	fmt.Print("Pokedex > ")
 	for scanner.Scan() {
-		arg := scanner.Text()
-		argWords := cleanInput(arg)
-		fmt.Println("Your command was:", argWords[0])
+		input := scanner.Text()
+		args := cleanInput(input)
+
+		if len(input) == 0{
+			fmt.Print("Pokedex > ")
+			continue
+		}
+		
+		_, ok := commands[args[0]]
+		if !ok {
+			fmt.Println("Unknown command")
+			continue
+		}
+		
 		fmt.Print("Pokedex > ")
 	}
+	
 	if err := scanner.Err(); err != nil {
 		fmt.Fprintln(os.Stderr, "error:", err)
 	}
