@@ -3,6 +3,7 @@ package main
 import (
 	"io"
 	"os"
+	"os/exec"
 	"strings"
 	"testing"
 )
@@ -66,4 +67,20 @@ exit: Exit the Pokedex`
 	if err != nil {
 		t.Errorf("Expected no error but got: \n%v", err)
 	}
+}
+
+func TestCommandExit(t *testing.T) {
+	if os.Getenv("BE_EXIT") == "0" {
+		commandExit()
+		return
+	}
+
+	cmd := exec.Command(os.Args[0], "-test.run=TestCommandExit")
+	cmd.Env = append(os.Environ(), "BE_EXIT=0")
+	err := cmd.Run()
+	if err == nil {
+		return
+	}
+
+	t.Fatalf("process run with err %v, want exit status 0", err)
 }
