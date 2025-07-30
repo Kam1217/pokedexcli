@@ -17,8 +17,8 @@ func cleanInput(text string) []string {
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Print("Pokedex > ")
 	for scanner.Scan() {
-		fmt.Print("Pokedex >")
 		arg := scanner.Text()
 		argWords := cleanInput(arg)
 		fmt.Println("Your command was:", argWords[0])
