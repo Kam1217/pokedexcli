@@ -27,12 +27,24 @@ func commandExit() error {
 	return nil
 }
 
+func commandHelp() error{
+	fmt.Println("Welcome to the Pokedex")
+	fmt.Println("Usage:")
+	fmt.Println("")
+	return nil
+}
+
 func main() {
 	commands := map[string]cliCommand{
 		"exit": {
 			name: "exit",
 			description: "Exit the Pokedex",
 			callback: commandExit,
+		},
+		"help":{
+			name: "help",
+			description: "Displays a help message",
+			callback: commandHelp,
 		},
 	}
 
@@ -57,8 +69,6 @@ func main() {
 			fmt.Println("Error: ", err.Error())
 			continue
 		}
-		
-		
 	}
 	
 	if err := scanner.Err(); err != nil {
