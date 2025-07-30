@@ -1,6 +1,9 @@
 package main
 
 import (
+	"io"
+	"os"
+	"strings"
 	"testing"
 )
 
@@ -21,19 +24,46 @@ func TestCleanInput(t *testing.T) {
 			expected: []string{"i", "like", "mew", "and", "jigglypuff"},
 		}}
 
-		for _,c := range cases{
-			actual := cleanInput(c.input)
-			if len(actual) != len(c.expected){
-				t.Errorf("length of actual slice: %d, does not match length of expected slice: %d", len(actual), len(c.expected))
-			}
-
-			for i := range actual{
-				word := actual[i]
-				expectedWord := c.expected[i]
-				if word != expectedWord{
-					t.Errorf("Word %s, does not match expected word %s", word, expectedWord)
-				}
-			}
-
+	for _, c := range cases {
+		actual := cleanInput(c.input)
+		if len(actual) != len(c.expected) {
+			t.Errorf("length of actual slice: %d, does not match length of expected slice: %d", len(actual), len(c.expected))
 		}
+
+		for i := range actual {
+			word := actual[i]
+			expectedWord := c.expected[i]
+			if word != expectedWord {
+				t.Errorf("Word %s, does not match expected word %s", word, expectedWord)
+			}
+		}
+
+	}
+}
+
+func TestCommandHelp(t *testing.T) {
+	oldStdout := os.Stdout
+	r, w, _ := os.Pipe()
+	os.Stdout = w
+
+	err := commandHelp()
+
+	w.Close()
+	os.Stdout = oldStdout
+
+	output, _ := io.ReadAll(r)
+	outputStr := strings.TrimSpace(string(output))
+
+	expectedOutput := `Usage:
+
+help: Displays a help message
+exit: Exit the Pokedex`
+
+	if outputStr != expectedOutput {
+		t.Errorf("Expected output: \n%s, \nActual output: \n%s", expectedOutput, outputStr)
+	}
+
+	if err != nil {
+		t.Errorf("Expected no error but got: \n%v", err)
+	}
 }
