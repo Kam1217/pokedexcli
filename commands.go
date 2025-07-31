@@ -25,3 +25,8 @@ func commandMap() error{
 	fmt.Println("Will display 20 pokemon locations")
 	return nil
 }
+
+func commandMapb() error {
+	fmt.Println("Will display 20 previous pokemon locations")
+	return nil
+}

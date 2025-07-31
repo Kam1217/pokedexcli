@@ -20,7 +20,6 @@ func NewClient() *Client{
 	}
 }
 
-
 func (c *Client) GetLocationAreas() (*LocationAreaResponse, error) {
 	res, err := c.client.Get(c.BaseURL)
 	if err != nil {
