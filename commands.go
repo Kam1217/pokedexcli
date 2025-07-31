@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-
 	"github.com/Kam1217/pokedexcli/internal/pokemonclient"
 )
 

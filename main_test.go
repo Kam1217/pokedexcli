@@ -57,6 +57,8 @@ func TestCommandHelp(t *testing.T) {
 
 	expectedOutput := `Usage:
 
+map: Displays the names of 20 location areas in the Pokemon world
+mapb: Displays the names of 20 previous location areas in the Pokemon world
 help: Displays a help message
 exit: Exit the Pokedex`
 
