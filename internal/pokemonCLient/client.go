@@ -8,9 +8,21 @@ import (
 	"net/http"
 )
 
+type Client struct {
+	BaseURL string
+	client *http.Client
+}
 
-func GetLocationAreas(url string) (*LocationAreaResponse, error) {
-	res, err := http.Get("https://pokeapi.co/api/v2/location-area/")
+func NewClient() *Client{
+	return &Client{
+		BaseURL: "https://pokeapi.co/api/v2/location-area/",
+		client: &http.Client{},
+	}
+}
+
+
+func (c *Client) GetLocationAreas() (*LocationAreaResponse, error) {
+	res, err := c.client.Get(c.BaseURL)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
