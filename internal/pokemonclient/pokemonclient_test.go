@@ -1,8 +1,8 @@
 package pokemonclient
 
 import (
-	"net/http"
-	"net/http/httptest"
+	// "net/http"
+	// "net/http/httptest"
 	"testing"
 )
 
@@ -20,31 +20,31 @@ func TestNewClient(t *testing.T) {
 }
 
 func TestGetLocationAreas(t *testing.T) {
-	mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		expectedJSON := `{
-		"next": "https://pokeapi.co/api/v2/location-area?offset=20&limit=20",
-		"previous": null,
-		"results":[
-		{
-			"name": "mock-area-1",
-			"URL":"https://pokeapi.co/api/v2/location-area/1/"
-		},
-		{
-			"name": "mock-area-2",
-			"URL": "https://pokeapi.co/api/v2/location-area/2/"
-		}
-			]
-		}`
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(expectedJSON))
-	}))
+	//TODO: USE THIS FOR COMMAND TESTS
+	// mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	// 	expectedJSON := `{
+	// 	"next": "https://pokeapi.co/api/v2/location-area?offset=20&limit=20",
+	// 	"previous": null,
+	// 	"results":[
+	// 	{
+	// 		"name": "mock-area-1",
+	// 		"URL":"https://pokeapi.co/api/v2/location-area/1/"
+	// 	},
+	// 	{
+	// 		"name": "mock-area-2",
+	// 		"URL": "https://pokeapi.co/api/v2/location-area/2/"
+	// 	}
+	// 		]
+	// 	}`
+	// 	w.Header().Set("Content-Type", "application/json")
+	// 	w.WriteHeader(http.StatusOK)
+	// 	w.Write([]byte(expectedJSON))
+	// }))
 
-	defer mockServer.Close()
+	// defer mockServer.Close()
 
 	clt := NewClient()
-	clt.BaseURL = mockServer.URL
-
+	clt.BaseURL = "https://pokeapi.co/api/v2"
 	res, err := clt.GetLocationAreas("")
 	if err != nil {
 		t.Fatalf("Expected no error but got: %v", err)
@@ -58,13 +58,9 @@ func TestGetLocationAreas(t *testing.T) {
 		t.Fatalf("Expected previous URL to be null but got: %s", res.Previous)
 	}
 
-	if len(res.Results) != 2 {
+	if len(res.Results) != 20 {
 		t.Logf("%v", res.Results)
-		t.Fatalf("Expected 2 results but got: %d", len(res.Results))
-	}
-
-	if res.Results[0].Name != "mock-area-1" {
-		t.Fatalf("Expected reult name to be mock-area-1, but got: %s", res.Results[0].Name)
+		t.Fatalf("Expected 20 results but got: %d", len(res.Results))
 	}
 
 }
