@@ -1,4 +1,4 @@
-package pokemonClient
+package pokemonclient
 
 import (
 	"encoding/json"
@@ -10,18 +10,22 @@ import (
 
 type Client struct {
 	BaseURL string
-	client *http.Client
+	client  *http.Client
 }
 
-func NewClient() *Client{
+func NewClient() *Client {
 	return &Client{
-		BaseURL: "https://pokeapi.co/api/v2/location-area/",
-		client: &http.Client{},
+		BaseURL: "https://pokeapi.co/api/v2",
+		client:  &http.Client{},
 	}
 }
 
-func (c *Client) GetLocationAreas() (*LocationAreaResponse, error) {
-	res, err := c.client.Get(c.BaseURL)
+func (c *Client) GetLocationAreas(overrideURL string) (*LocationAreaResponse, error) {
+	url := c.BaseURL + "/location-area"
+	if overrideURL != "" {
+		url = overrideURL
+	}
+	res, err := c.client.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
@@ -31,7 +35,7 @@ func (c *Client) GetLocationAreas() (*LocationAreaResponse, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error reading response: %w", err)
 	}
-	
+
 	if res.StatusCode > 299 {
 		log.Fatalf("Response failed with status code: %d and\nbody: %s\n", res.StatusCode, body)
 	}

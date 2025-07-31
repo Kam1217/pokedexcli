@@ -47,7 +47,7 @@ func TestCommandHelp(t *testing.T) {
 	r, w, _ := os.Pipe()
 	os.Stdout = w
 
-	err := commandHelp()
+	err := commandHelp(nil)
 
 	w.Close()
 	os.Stdout = oldStdout
@@ -71,7 +71,7 @@ exit: Exit the Pokedex`
 
 func TestCommandExit(t *testing.T) {
 	if os.Getenv("BE_EXIT") == "0" {
-		commandExit()
+		commandExit(nil)
 		return
 	}
 

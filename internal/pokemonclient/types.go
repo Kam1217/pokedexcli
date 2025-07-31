@@ -1,4 +1,4 @@
-package pokemonClient
+package pokemonclient
 
 type LocationAreaResponse struct {
 	Next string `json:"next"`
