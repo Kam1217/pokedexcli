@@ -9,13 +9,13 @@ import (
 func TestNewClient(t *testing.T) {
 	clt := NewClient()
 	if clt == nil {
-		t.Errorf("No new client created")
+		t.Fatalf("No new client created")
 	}
 	if clt.BaseURL != "https://pokeapi.co/api/v2" {
-		t.Errorf("Expected based url to be:https://pokeapi.co/api/v2, but got: %s", clt.BaseURL)
+		t.Fatalf("Expected based url to be:https://pokeapi.co/api/v2, but got: %s", clt.BaseURL)
 	}
 	if clt.client == nil {
-		t.Errorf("The http clint has not been initialised")
+		t.Fatalf("The http clint has not been initialised")
 	}
 }
 
@@ -24,7 +24,7 @@ func TestGetLocationAreas(t *testing.T) {
 		expectedJSON := `{
 		"next": "https://pokeapi.co/api/v2/location-area?offset=20&limit=20",
 		"previous": null,
-		"result":[
+		"results":[
 		{
 			"name": "mock-area-1",
 			"URL":"https://pokeapi.co/api/v2/location-area/1/"
@@ -47,23 +47,24 @@ func TestGetLocationAreas(t *testing.T) {
 
 	res, err := clt.GetLocationAreas("")
 	if err != nil {
-		t.Errorf("Expected no error but got: %v", err)
+		t.Fatalf("Expected no error but got: %v", err)
 	}
 
 	if res.Next != "https://pokeapi.co/api/v2/location-area?offset=20&limit=20" {
-		t.Errorf("Expected next URL but got: %s", res.Next)
+		t.Fatalf("Expected next URL but got: %s", res.Next)
 	}
 
 	if res.Previous != "" {
-		t.Errorf("Expected previous URL to be null but got: %s", res.Previous)
+		t.Fatalf("Expected previous URL to be null but got: %s", res.Previous)
 	}
 
 	if len(res.Results) != 2 {
-		t.Errorf("Expected 2 results but got: %d", len(res.Results))
+		t.Logf("%v", res.Results)
+		t.Fatalf("Expected 2 results but got: %d", len(res.Results))
 	}
 
 	if res.Results[0].Name != "mock-area-1" {
-		t.Errorf("Expected reult name to be mock-area-1, but got: %s", res.Results[0].Name)
+		t.Fatalf("Expected reult name to be mock-area-1, but got: %s", res.Results[0].Name)
 	}
 
 }
