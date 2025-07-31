@@ -51,10 +51,9 @@ func TestCommandHelp(t *testing.T) {
 
 	w.Close()
 	os.Stdout = oldStdout
-
+//TODO: check for each individual string
 	output, _ := io.ReadAll(r)
 	outputStr := strings.TrimSpace(string(output))
-
 	expectedOutput := `Usage:
 
 map: Displays the names of 20 location areas in the Pokemon world
