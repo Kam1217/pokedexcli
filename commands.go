@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"github.com/Kam1217/pokedexcli/internal/pokemonclient"
+	"errors"
 )
 
 func commandExit(conf *Config) error {
@@ -44,6 +45,9 @@ func commandMapb(conf *Config) error {
 	}
 	conf.Previous = res.Previous
 	conf.Next = res.Next
+	if conf.Previous == ""{
+		return errors.New("you're on the first page")
+	}
 	for _, location := range res.Results {
 		println(location.Name)
 	}
