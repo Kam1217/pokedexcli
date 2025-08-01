@@ -1,4 +1,4 @@
-package pokecashe
+package cache
 
 import (
 	"sync"
@@ -6,16 +6,16 @@ import (
 )
 
 type cacheEntry struct {
-    createdAt time.Time
-    val       []byte	
+	createdAt time.Time
+	val       []byte
 }
 
 type Cache struct {
 	data map[string]cacheEntry
-	mu sync.Mutex
+	mu   sync.Mutex
 }
 
-func NewCache(interval time.Duration) *Cache{
+func NewCache(interval time.Duration) *Cache {
 	cach := &Cache{
 		data: make(map[string]cacheEntry),
 	}
@@ -28,12 +28,12 @@ func (c *Cache) Add(key string, val []byte) {
 	defer c.mu.Unlock()
 	cEntry := cacheEntry{
 		createdAt: time.Now(),
-		val: val,
+		val:       val,
 	}
 	c.data[key] = cEntry
 }
 
-func (c *Cache) Get(key string) ([]byte, bool){
+func (c *Cache) Get(key string) ([]byte, bool) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -44,20 +44,19 @@ func (c *Cache) Get(key string) ([]byte, bool){
 	return entry.val, true
 }
 
-func (c *Cache) reapLoop(interval time.Duration){
+func (c *Cache) reapLoop(interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	for{
+	for {
 		<-ticker.C
 		c.mu.Lock()
 
-		for k, entry := range c.data{
-			if entry.createdAt.Before(time.Now().Add(-interval)){
+		for k, entry := range c.data {
+			if entry.createdAt.Before(time.Now().Add(-interval)) {
 				delete(c.data, k)
 			}
 		}
 		c.mu.Unlock()
 	}
 }
-
