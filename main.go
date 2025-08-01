@@ -56,7 +56,7 @@ func main() {
 	cach := cache.NewCache(10 * time.Minute)
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Welcome to the Pokedex!")
-	conf := &Config{}
+	conf := &Config{Cache: cach}
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
