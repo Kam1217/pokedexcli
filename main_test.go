@@ -51,18 +51,19 @@ func TestCommandHelp(t *testing.T) {
 
 	w.Close()
 	os.Stdout = oldStdout
-//TODO: check for each individual string
 	output, _ := io.ReadAll(r)
 	outputStr := strings.TrimSpace(string(output))
-	expectedOutput := `Usage:
+	expectedStrings := []string{
+		"map: Displays the names of 20 location areas in the Pokemon world",
+		"mapb: Displays the names of 20 previous location areas in the Pokemon world",
+		"help: Displays a help message",
+		"exit: Exit the Pokedex",
+	}
 
-map: Displays the names of 20 location areas in the Pokemon world
-mapb: Displays the names of 20 previous location areas in the Pokemon world
-help: Displays a help message
-exit: Exit the Pokedex`
-
-	if outputStr != expectedOutput {
-		t.Errorf("Expected output: \n%s, \nActual output: \n%s", expectedOutput, outputStr)
+	for _, expected := range expectedStrings {
+		if !strings.Contains(outputStr, expected) {
+			t.Errorf("Expected output to contain %s", expected)
+		}
 	}
 
 	if err != nil {
