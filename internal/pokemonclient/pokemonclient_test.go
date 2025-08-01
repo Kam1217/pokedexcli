@@ -5,10 +5,12 @@ import (
 	// "net/http/httptest"
 	"testing"
 	"github.com/Kam1217/pokedexcli/internal/cache"
+	"time"
 )
 
 func TestNewClient(t *testing.T) {
-	clt := NewClient()
+	cash := cache.NewCache(10 * time.Minute)
+	clt := NewClient(cash)
 	if clt == nil {
 		t.Fatalf("No new client created")
 	}
@@ -43,8 +45,8 @@ func TestGetLocationAreas(t *testing.T) {
 	// }))
 
 	// defer mockServer.Close()
-
-	clt := NewClient()
+	cach := cache.NewCache(10 * time.Minute)
+	clt := NewClient(cach)
 	clt.BaseURL = "https://pokeapi.co/api/v2"
 	res, err := clt.GetLocationAreas("")
 	if err != nil {
