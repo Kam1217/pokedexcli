@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/Kam1217/pokedexcli/internal/cache"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -10,6 +9,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Kam1217/pokedexcli/internal/cache"
 )
 
 func TestCleanInput(t *testing.T) {
@@ -183,12 +184,45 @@ func TestCommandMapb(t *testing.T) {
 		os.Stdout = oldStdout
 		outputStr := strings.TrimSpace(string(output))
 
-		if err != nil{
+		if err != nil {
 			t.Errorf("Expected no error but got: %v", err)
 		}
 
-		if !strings.Contains(outputStr, "mock-area-3"){
+		if !strings.Contains(outputStr, "mock-area-3") {
 			t.Errorf("Expected output to contain: mock-area-3")
+		}
+	})
+
+	t.Run("First page error", func(t *testing.T) {
+		mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			expectedJSON := `{
+		"next": "https://pokeapi.co/api/v2/location-area?offset=20&limit=20",
+		"previous": null,
+		"results": []
+		}`
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(expectedJSON))
+		}))
+
+		defer mockServer.Close()
+
+		cach := cache.NewCache(10 * time.Minute)
+		conf := &Config{
+			Next:     "",
+			Previous: mockServer.URL,
+			Cache:    cach,
+		}
+
+		err := commandMapb(conf)
+
+		if err == nil {
+			t.Errorf("Expected first page error but got nil")
+		}
+
+		expectedError := "you're on the first page"
+		if err.Error() != expectedError {
+			t.Errorf("Expected %s, but got %s", expectedError, err.Error())
 		}
 	})
 }
