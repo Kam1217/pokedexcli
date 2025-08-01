@@ -1,10 +1,11 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
+
 	"github.com/Kam1217/pokedexcli/internal/pokemonclient"
-	"errors"
 )
 
 func commandExit(conf *Config) error {
@@ -32,7 +33,7 @@ func commandMap(conf *Config) error {
 	conf.Next = res.Next
 	conf.Previous = res.Previous
 	for _, location := range res.Results {
-		println(location.Name)
+		fmt.Println(location.Name)
 	}
 	return nil
 }
@@ -45,11 +46,11 @@ func commandMapb(conf *Config) error {
 	}
 	conf.Previous = res.Previous
 	conf.Next = res.Next
-	if conf.Previous == ""{
+	if conf.Previous == "" {
 		return errors.New("you're on the first page")
 	}
 	for _, location := range res.Results {
-		println(location.Name)
+		fmt.Println(location.Name)
 	}
 	return nil
 }
