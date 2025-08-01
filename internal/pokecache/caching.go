@@ -45,7 +45,7 @@ func (c *Cache) Get(key string) ([]byte, bool){
 }
 
 func (c *Cache) reapLoop(interval time.Duration){
-	ticker := time.NewTicker(-interval)
+	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
 	for{
@@ -53,7 +53,7 @@ func (c *Cache) reapLoop(interval time.Duration){
 		c.mu.Lock()
 
 		for k, entry := range c.data{
-			if entry.createdAt.Before(time.Now().Add(interval)){
+			if entry.createdAt.Before(time.Now().Add(-interval)){
 				delete(c.data, k)
 			}
 		}
