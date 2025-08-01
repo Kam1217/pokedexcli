@@ -24,7 +24,7 @@ func commandHelp(conf *Config) error {
 }
 
 func commandMap(conf *Config) error {
-	c := pokemonclient.NewClient()
+	c := pokemonclient.NewClient(conf.Cache)
 	res, err := c.GetLocationAreas(conf.Next)
 	if err != nil {
 		return err
@@ -38,7 +38,7 @@ func commandMap(conf *Config) error {
 }
 
 func commandMapb(conf *Config) error {
-	c := pokemonclient.NewClient()
+	c := pokemonclient.NewClient(conf.Cache)
 	res, err := c.GetLocationAreas(conf.Previous)
 	if err != nil {
 		return err

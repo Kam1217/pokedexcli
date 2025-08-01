@@ -4,6 +4,7 @@ import (
 	// "net/http"
 	// "net/http/httptest"
 	"testing"
+	"github.com/Kam1217/pokedexcli/internal/cache"
 )
 
 func TestNewClient(t *testing.T) {

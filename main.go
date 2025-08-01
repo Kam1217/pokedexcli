@@ -5,11 +5,14 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
+	"github.com/Kam1217/pokedexcli/internal/cache"
 )
 
 type Config struct {
-	Next string
+	Next     string
 	Previous string
+	Cache    *cache.Cache
 }
 
 type cliCommand struct {
@@ -50,6 +53,7 @@ func getCommands() map[string]cliCommand {
 }
 
 func main() {
+	cach := cache.NewCache(10 * time.Minute)
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Welcome to the Pokedex!")
 	conf := &Config{}
