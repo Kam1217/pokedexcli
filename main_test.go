@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Kam1217/pokedexcli/internal/cache"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -9,7 +10,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-	"github.com/Kam1217/pokedexcli/internal/cache"
 )
 
 func TestCleanInput(t *testing.T) {
@@ -115,34 +115,80 @@ func TestCommandMap(t *testing.T) {
 	defer mockServer.Close()
 
 	oldStdout := os.Stdout
-	r,w,_ := os.Pipe()
+	r, w, _ := os.Pipe()
 	os.Stdout = w
 
 	cach := cache.NewCache(10 * time.Minute)
 	conf := &Config{
-		Next: mockServer.URL,
-		Previous: "", 
-		Cache : cach,
+		Next:     mockServer.URL,
+		Previous: "",
+		Cache:    cach,
 	}
 
 	err := commandMap(conf)
 	w.Close()
-	output, _:= io.ReadAll(r)
+	output, _ := io.ReadAll(r)
 	os.Stdout = oldStdout
 	outputStr := strings.TrimSpace(string(output))
 
-	if err != nil{
+	if err != nil {
 		t.Error("Expected no error but go: %w", err)
 	}
 
 	expectedNames := []string{"mock-area-1", "mock-area-2"}
-	for _, name := range expectedNames{
-		if !strings.Contains(outputStr, name){
+	for _, name := range expectedNames {
+		if !strings.Contains(outputStr, name) {
 			t.Errorf("Expected output to contain %s", name)
 		}
 	}
 
-	if conf.Next != "https://pokeapi.co/api/v2/location-area?offset=20&limit=20"{
+	if conf.Next != "https://pokeapi.co/api/v2/location-area?offset=20&limit=20" {
 		t.Errorf("Expected Next to be updated")
 	}
+}
+
+func TestCommandMapb(t *testing.T) {
+	t.Run("Normal operation", func(t *testing.T) {
+		mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			expectedJSON := `{
+		"next": "https://pokeapi.co/api/v2/location-area?offset=20&limit=20",
+		"previous":"https://pokeapi.co/api/v2/location-area?offset=0&limit=20",
+		"results":[
+		{
+			"name": "mock-area-3",
+			"URL":"https://pokeapi.co/api/v2/location-area/3/"
+		}
+			]
+		}`
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(expectedJSON))
+		}))
+		defer mockServer.Close()
+
+		oldStdout := os.Stdout
+		r, w, _ := os.Pipe()
+		os.Stdout = w
+
+		cach := cache.NewCache(10 * time.Minute)
+		conf := &Config{
+			Next:     "",
+			Previous: mockServer.URL,
+			Cache:    cach,
+		}
+
+		err := commandMapb(conf)
+		w.Close()
+		output, _ := io.ReadAll(r)
+		os.Stdout = oldStdout
+		outputStr := strings.TrimSpace(string(output))
+
+		if err != nil{
+			t.Errorf("Expected no error but got: %v", err)
+		}
+
+		if !strings.Contains(outputStr, "mock-area-3"){
+			t.Errorf("Expected output to contain: mock-area-3")
+		}
+	})
 }
