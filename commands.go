@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"math/rand"
 )
 
 func commandExit(conf *Config, args []string) error {
