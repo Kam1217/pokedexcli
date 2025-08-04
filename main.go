@@ -29,6 +29,11 @@ func cleanInput(text string) []string {
 
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
+		"explore": {
+			name: "explore",
+			description: "After using 'map', 'explore, to see a list of all the Pokemon in a given location",
+			callback: commandExplore,
+		},
 		"map": {
 			name:        "map",
 			description: "Displays the names of 20 location areas in the Pokemon world",

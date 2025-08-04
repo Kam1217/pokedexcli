@@ -54,3 +54,8 @@ func commandMapb(conf *Config) error {
 	}
 	return nil
 }
+
+func commandExplore(conf *Config) error {
+	fmt.Println("I wish to explore this location")
+	return nil
+}
