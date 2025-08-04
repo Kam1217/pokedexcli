@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Kam1217/pokedexcli/internal/cache"
+	"github.com/Kam1217/pokedexcli/internal/pokemonclient"
 )
 
 func TestCleanInput(t *testing.T) {
@@ -52,7 +53,7 @@ func TestCommandHelp(t *testing.T) {
 	r, w, _ := os.Pipe()
 	os.Stdout = w
 
-	err := commandHelp(nil)
+	err := commandHelp(nil, nil)
 
 	w.Close()
 	os.Stdout = oldStdout
@@ -79,7 +80,7 @@ func TestCommandHelp(t *testing.T) {
 
 func TestCommandExit(t *testing.T) {
 	if os.Getenv("BE_EXIT") == "0" {
-		commandExit(nil)
+		commandExit(nil, nil)
 		return
 	}
 
@@ -125,9 +126,10 @@ func TestCommandMap(t *testing.T) {
 		Next:     mockServer.URL,
 		Previous: "",
 		Cache:    cach,
+		PokemonClient: pokemonclient.NewClient(cach),
 	}
 
-	err := commandMap(conf)
+	err := commandMap(conf, nil)
 	w.Close()
 	output, _ := io.ReadAll(r)
 	os.Stdout = oldStdout
@@ -177,9 +179,10 @@ func TestCommandMapb(t *testing.T) {
 			Next:     "",
 			Previous: mockServer.URL,
 			Cache:    cach,
+			PokemonClient: pokemonclient.NewClient(cach),
 		}
 
-		err := commandMapb(conf)
+		err := commandMapb(conf, nil)
 		w.Close()
 		output, _ := io.ReadAll(r)
 		os.Stdout = oldStdout
@@ -213,9 +216,10 @@ func TestCommandMapb(t *testing.T) {
 			Next:     "",
 			Previous: mockServer.URL,
 			Cache:    cach,
+			PokemonClient: pokemonclient.NewClient(cach),
 		}
 
-		err := commandMapb(conf)
+		err := commandMapb(conf, nil)
 
 		if err == nil {
 			t.Errorf("Expected first page error but got nil")
