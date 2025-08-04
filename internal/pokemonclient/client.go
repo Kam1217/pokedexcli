@@ -58,3 +58,37 @@ func (c *Client) GetLocationAreas(overrideURL string) (*LocationAreaResponse, er
 	}
 	return &locationResp, nil
 }
+
+func (c *Client) FindPokemon (overrideURL, name string) (*FindPokeonResponse, error){
+	url := c.BaseURL + "/location-area/" + name
+	if overrideURL != ""{
+		url = overrideURL
+	}
+	var body []byte
+	val, ok := c.Cache.Get(url)
+	if ok {
+		body = val
+	} else {
+		res, err := c.client.Get(url)
+		if err != nil {
+			return nil, fmt.Errorf("error creating request: %w", err)
+		}
+		defer res.Body.Close()
+
+		body, err = io.ReadAll(res.Body)
+		if err != nil {
+			return nil, fmt.Errorf("error reading response: %w", err)
+		}
+
+		if res.StatusCode > 299 {
+			log.Fatalf("Response failed with status code: %d and\nbody: %s\n", res.StatusCode, body)
+		}
+		c.Cache.Add(url, body)
+	}	
+	var findPokemonResp FindPokeonResponse	
+	
+	if err := json.Unmarshal(body, &findPokemonResp); err != nil {
+		return nil, fmt.Errorf("error decoding response body: %w", err)
+	}
+	return &findPokemonResp, nil	
+}
