@@ -60,6 +60,7 @@ func TestCommandHelp(t *testing.T) {
 	output, _ := io.ReadAll(r)
 	outputStr := strings.TrimSpace(string(output))
 	expectedStrings := []string{
+		"catch: Catch a specific pokemon by calling 'catch' with the pokemon name",
 		"explore: After using 'map', 'explore, to see a list of all the Pokemon in a given location",
 		"map: Displays the names of 20 location areas in the Pokemon world",
 		"mapb: Displays the names of 20 previous location areas in the Pokemon world",

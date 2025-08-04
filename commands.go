@@ -67,3 +67,8 @@ func commandExplore(conf *Config, args []string) error {
 	}
 	return nil
 }
+
+func commandCatch(conf *Config, args []string) error {
+	fmt.Println("Catching pokemon")
+	return nil
+}
