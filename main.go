@@ -11,17 +11,17 @@ import (
 	"github.com/Kam1217/pokedexcli/internal/pokemonclient"
 )
 
-type Pokemon struct{
-	Name string
+type Pokemon struct {
+	Name           string
 	BaseExperience int
 }
 
 type Config struct {
-	Next     string
-	Previous string
-	Cache    *cache.Cache
+	Next          string
+	Previous      string
+	Cache         *cache.Cache
 	PokemonClient *pokemonclient.Client
-	Pokedex map[string]Pokemon
+	Pokedex       map[string]Pokemon
 }
 
 type cliCommand struct {
@@ -39,9 +39,9 @@ func cleanInput(text string) []string {
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"catch": {
-			name: "catch",
+			name:        "catch",
 			description: "Catch a specific pokemon by calling 'catch' with the pokemon name",
-			callback: commandCatch,
+			callback:    commandCatch,
 		},
 		"explore": {
 			name:        "explore",
@@ -76,7 +76,7 @@ func main() {
 	pokeClient := pokemonclient.NewClient(cach)
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Welcome to the Pokedex!")
-	conf := &Config{Cache: cach, PokemonClient: pokeClient}
+	conf := &Config{Cache: cach, PokemonClient: pokeClient, Pokedex: make(map[string]Pokemon)}
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
