@@ -289,4 +289,24 @@ func TestCommandExplore(t *testing.T) {
 			t.Errorf("output did not contain mock-name-2")
 		}
 	})
+
+	t.Run("Empty argument list", func(t *testing.T) {
+		cach := cache.NewCache(10 * time.Minute)
+		client := pokemonclient.NewClient(cach)
+
+		conf := &Config{
+			PokemonClient: client,
+			Cache:         cach,
+		}
+
+		err := commandExplore(conf, []string{})
+
+		if err == nil {
+			t.Errorf("expected error for empty args, got nil")
+		}
+		wantMsg := "pokemon location area cannot be empty"
+		if err != nil && err.Error() != wantMsg {
+			t.Errorf("expected error '%s', got '%v'", wantMsg, err)
+		}
+	})
 }
