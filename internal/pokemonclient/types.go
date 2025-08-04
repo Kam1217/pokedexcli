@@ -18,3 +18,11 @@ type FindPokemonResponse struct {
 	} `json:"pokemon_encounters"`
 }
 
+
+type CatchPokemonResponse struct{
+	BaseExperience int `json:"base_experience"`
+	Forms [] struct{
+		Name string `json:"name"`
+		URL string `json:"url"`
+	} `json:"forms"`
+}
