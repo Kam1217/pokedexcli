@@ -56,6 +56,16 @@ func commandMapb(conf *Config, args []string) error {
 }
 
 func commandExplore(conf *Config, args []string) error {
-	fmt.Println("I wish to explore this location")
+	c := pokemonclient.NewClient(conf.Cache)
+	if len(args) == 0 {
+		return errors.New("pokemon location area cannot be empty")
+	}
+	res, err := c.FindPokemon(args[0])
+	if err != nil {
+		return err
+	}
+	for _, pokemon := range res.PokemonEncounters {
+		fmt.Printf("- %s\n", pokemon.Pokemon.Name)
+	}
 	return nil
 }
