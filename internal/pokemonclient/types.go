@@ -9,3 +9,12 @@ type LocationAreaResponse struct {
 	} `json:"results"`  
 }
 
+type FindPokemonResponse struct {
+	PokemonEncounters [] struct {
+		Pokemon struct {
+			Name string `json:"name"`
+			URL string `json:"url"`
+		} `json:"pokemon"`
+	} `json:"pokemon_encounters"`
+}
+
