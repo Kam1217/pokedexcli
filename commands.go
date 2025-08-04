@@ -69,6 +69,26 @@ func commandExplore(conf *Config, args []string) error {
 }
 
 func commandCatch(conf *Config, args []string) error {
-	fmt.Printf("Throwing a Pokeball at")
+	c := conf.PokemonClient
+
+	if len(args) == 0 {
+		return errors.New("pokemon name cannot be empty")
+	}
+
+	fmt.Printf("Throwing a Pokeball at %s...", args[0])
+
+	res, err := c.CatchPokemon(args[0])
+	if err != nil {
+		return err
+	}
+
+	randomNum := rand.Intn(res.BaseExperience) + 1
+	catchThreshold := 100
+
+	if randomNum <= catchThreshold{
+		fmt.Printf("%s was caught!\n", args[0])
+	} else {
+		fmt.Printf("%s escaped!\n", args[0])
+	}
 	return nil
 }
