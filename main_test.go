@@ -123,9 +123,9 @@ func TestCommandMap(t *testing.T) {
 
 	cach := cache.NewCache(10 * time.Minute)
 	conf := &Config{
-		Next:     mockServer.URL,
-		Previous: "",
-		Cache:    cach,
+		Next:          mockServer.URL,
+		Previous:      "",
+		Cache:         cach,
 		PokemonClient: pokemonclient.NewClient(cach),
 	}
 
@@ -176,9 +176,9 @@ func TestCommandMapb(t *testing.T) {
 
 		cach := cache.NewCache(10 * time.Minute)
 		conf := &Config{
-			Next:     "",
-			Previous: mockServer.URL,
-			Cache:    cach,
+			Next:          "",
+			Previous:      mockServer.URL,
+			Cache:         cach,
 			PokemonClient: pokemonclient.NewClient(cach),
 		}
 
@@ -213,9 +213,9 @@ func TestCommandMapb(t *testing.T) {
 
 		cach := cache.NewCache(10 * time.Minute)
 		conf := &Config{
-			Next:     "",
-			Previous: mockServer.URL,
-			Cache:    cach,
+			Next:          "",
+			Previous:      mockServer.URL,
+			Cache:         cach,
 			PokemonClient: pokemonclient.NewClient(cach),
 		}
 
@@ -228,6 +228,65 @@ func TestCommandMapb(t *testing.T) {
 		expectedError := "you're on the first page"
 		if err.Error() != expectedError {
 			t.Errorf("Expected %s, but got %s", expectedError, err.Error())
+		}
+	})
+}
+
+func TestCommandExplore(t *testing.T) {
+	t.Run("Normal operation", func(t *testing.T) {
+		mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			expectedJSON := `
+        {
+            "pokemon_encounters": [
+                {
+                    "pokemon": {
+                        "name": "mock-name-1",
+                        "url": "https://pokeapi.co/api/v2/pokemon/1/"
+                    }
+                },
+                {
+                    "pokemon": {
+                        "name": "mock-name-2",
+                        "url": "https://pokeapi.co/api/v2/pokemon/2/"
+                    }
+                }
+            ]
+        }`
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(expectedJSON))
+		}))
+		defer mockServer.Close()
+
+		cach := cache.NewCache(10 * time.Minute)
+		newClient := pokemonclient.NewClient(cach)
+		newClient.BaseURL = mockServer.URL
+
+		conf := &Config{
+			Next:          mockServer.URL,
+			Previous:      mockServer.URL,
+			Cache:         cach,
+			PokemonClient: newClient,
+		}
+
+		old := os.Stdout
+		r, w, _ := os.Pipe()
+		os.Stdout = w
+
+		err := commandExplore(conf, []string{"mock-area"})
+
+		w.Close()
+		out, _ := io.ReadAll(r)
+		os.Stdout = old
+
+		if err != nil {
+			t.Fatalf("expected no error, got %v", err)
+		}
+		if !strings.Contains(string(out), "mock-name-1") {
+			t.Errorf("output did not contain mock-name-1")
+		}
+		if !strings.Contains(string(out), "mock-name-2") {
+			t.Errorf("output did not contain mock-name-2")
 		}
 	})
 }
