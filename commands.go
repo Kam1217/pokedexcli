@@ -4,8 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-
-	"github.com/Kam1217/pokedexcli/internal/pokemonclient"
 )
 
 func commandExit(conf *Config, args []string) error {
@@ -25,7 +23,7 @@ func commandHelp(conf *Config, args []string) error {
 }
 
 func commandMap(conf *Config, args []string) error {
-	c := pokemonclient.NewClient(conf.Cache)
+	c := conf.PokemonClient
 	res, err := c.GetLocationAreas(conf.Next)
 	if err != nil {
 		return err
@@ -39,7 +37,7 @@ func commandMap(conf *Config, args []string) error {
 }
 
 func commandMapb(conf *Config, args []string) error {
-	c := pokemonclient.NewClient(conf.Cache)
+	c := conf.PokemonClient
 	res, err := c.GetLocationAreas(conf.Previous)
 	if err != nil {
 		return err
@@ -56,7 +54,7 @@ func commandMapb(conf *Config, args []string) error {
 }
 
 func commandExplore(conf *Config, args []string) error {
-	c := pokemonclient.NewClient(conf.Cache)
+	c := conf.PokemonClient
 	if len(args) == 0 {
 		return errors.New("pokemon location area cannot be empty")
 	}
