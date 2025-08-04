@@ -3,8 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
-	"os"
 	"math/rand"
+	"os"
 )
 
 func commandExit(conf *Config, args []string) error {
@@ -86,8 +86,12 @@ func commandCatch(conf *Config, args []string) error {
 	randomNum := rand.Intn(res.BaseExperience) + 1
 	catchThreshold := 100
 
-	if randomNum <= catchThreshold{
+	if randomNum <= catchThreshold {
 		fmt.Printf("%s was caught!\n", args[0])
+		conf.Pokedex[args[0]] = Pokemon{
+			Name:           args[0],
+			BaseExperience: res.BaseExperience,
+		}
 	} else {
 		fmt.Printf("%s escaped!\n", args[0])
 	}

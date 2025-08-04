@@ -11,11 +11,17 @@ import (
 	"github.com/Kam1217/pokedexcli/internal/pokemonclient"
 )
 
+type Pokemon struct{
+	Name string
+	BaseExperience int
+}
+
 type Config struct {
 	Next     string
 	Previous string
 	Cache    *cache.Cache
 	PokemonClient *pokemonclient.Client
+	Pokedex map[string]Pokemon
 }
 
 type cliCommand struct {
