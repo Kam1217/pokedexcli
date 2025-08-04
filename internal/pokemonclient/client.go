@@ -59,11 +59,9 @@ func (c *Client) GetLocationAreas(overrideURL string) (*LocationAreaResponse, er
 	return &locationResp, nil
 }
 
-func (c *Client) FindPokemon (overrideURL, name string) (*FindPokemonResponse, error){
+func (c *Client) FindPokemon (name string) (*FindPokemonResponse, error){
 	url := c.BaseURL + "/location-area/" + name
-	if overrideURL != ""{
-		url = overrideURL
-	}
+
 	var body []byte
 	val, ok := c.Cache.Get(url)
 	if ok {

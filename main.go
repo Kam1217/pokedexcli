@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 	"time"
+
 	"github.com/Kam1217/pokedexcli/internal/cache"
 )
 
@@ -18,7 +19,7 @@ type Config struct {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*Config) error
+	callback    func(*Config, []string) error
 }
 
 func cleanInput(text string) []string {
@@ -30,9 +31,9 @@ func cleanInput(text string) []string {
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"explore": {
-			name: "explore",
+			name:        "explore",
 			description: "After using 'map', 'explore, to see a list of all the Pokemon in a given location",
-			callback: commandExplore,
+			callback:    commandExplore,
 		},
 		"map": {
 			name:        "map",
@@ -78,7 +79,7 @@ func main() {
 			fmt.Println("Unknown command")
 			continue
 		} else {
-			err := cmd.callback(conf)
+			err := cmd.callback(conf, input[1:])
 			if err != nil {
 				fmt.Println("Error: ", err.Error())
 				continue

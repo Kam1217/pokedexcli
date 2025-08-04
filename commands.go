@@ -8,13 +8,13 @@ import (
 	"github.com/Kam1217/pokedexcli/internal/pokemonclient"
 )
 
-func commandExit(conf *Config) error {
+func commandExit(conf *Config, args []string) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
 }
 
-func commandHelp(conf *Config) error {
+func commandHelp(conf *Config, args []string) error {
 	fmt.Println()
 	fmt.Println("Usage:")
 	fmt.Println()
@@ -24,7 +24,7 @@ func commandHelp(conf *Config) error {
 	return nil
 }
 
-func commandMap(conf *Config) error {
+func commandMap(conf *Config, args []string) error {
 	c := pokemonclient.NewClient(conf.Cache)
 	res, err := c.GetLocationAreas(conf.Next)
 	if err != nil {
@@ -38,7 +38,7 @@ func commandMap(conf *Config) error {
 	return nil
 }
 
-func commandMapb(conf *Config) error {
+func commandMapb(conf *Config, args []string) error {
 	c := pokemonclient.NewClient(conf.Cache)
 	res, err := c.GetLocationAreas(conf.Previous)
 	if err != nil {
@@ -55,7 +55,7 @@ func commandMapb(conf *Config) error {
 	return nil
 }
 
-func commandExplore(conf *Config) error {
+func commandExplore(conf *Config, args []string) error {
 	fmt.Println("I wish to explore this location")
 	return nil
 }
