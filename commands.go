@@ -91,6 +91,8 @@ func commandCatch(conf *Config, args []string) error {
 		conf.Pokedex[args[0]] = Pokemon{
 			Name:           args[0],
 			BaseExperience: res.BaseExperience,
+			Height:         res.Height,
+			Weight:         res.Weight,
 		}
 	} else {
 		fmt.Printf("%s escaped!\n", args[0])
@@ -106,9 +108,9 @@ func commandInspect(conf *Config, args []string) error {
 	if !exists {
 		fmt.Println("you have not caught that pokemon")
 	} else {
-		fmt.Printf("Name: %s\n",value.Name)
-		fmt.Printf("Height: %d\n",value.Height)
-		fmt.Printf("Weight: %d\n",value.Weight)
+		fmt.Printf("Name: %s\n", value.Name)
+		fmt.Printf("Height: %d\n", value.Height)
+		fmt.Printf("Weight: %d\n", value.Weight)
 		fmt.Printf("Stats:%v\n", value.Stats)
 		fmt.Printf("Types:%v\n", value.Types)
 	}
