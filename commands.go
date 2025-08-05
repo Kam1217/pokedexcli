@@ -93,6 +93,11 @@ func commandCatch(conf *Config, args []string) error {
 			BaseExperience: res.BaseExperience,
 			Height:         res.Height,
 			Weight:         res.Weight,
+			Stats: []struct {
+				BaseStat int
+				Stat     struct{ Name string }
+			}(res.Stats),
+			Types: []struct{ Type struct{ Name string } }(res.Types),
 		}
 	} else {
 		fmt.Printf("%s escaped!\n", args[0])
