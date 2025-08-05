@@ -88,6 +88,7 @@ func commandCatch(conf *Config, args []string) error {
 
 	if randomNum <= catchThreshold {
 		fmt.Printf("%s was caught!\n", args[0])
+		fmt.Println("You may now inspect it with inspect command.")
 		conf.Pokedex[args[0]] = Pokemon{
 			Name:           args[0],
 			BaseExperience: res.BaseExperience,
