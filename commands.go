@@ -128,3 +128,8 @@ func commandInspect(conf *Config, args []string) error {
 	}
 	return nil
 }
+
+func commandPokedex(conf *Config, args []string) error {
+	fmt.Print("Display caught pokemon")
+	return nil
+}
