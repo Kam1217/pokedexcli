@@ -106,7 +106,11 @@ func commandInspect(conf *Config, args []string) error {
 	if !exists {
 		fmt.Println("you have not caught that pokemon")
 	} else {
-		fmt.Println(value.Name)
+		fmt.Printf("Name: %s\n",value.Name)
+		fmt.Printf("Height: %d\n",value.Height)
+		fmt.Printf("Weight: %d\n",value.Weight)
+		fmt.Printf("Stats:%v\n", value.Stats)
+		fmt.Printf("Types:%v\n", value.Types)
 	}
 	return nil
 }
