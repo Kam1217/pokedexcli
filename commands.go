@@ -119,17 +119,24 @@ func commandInspect(conf *Config, args []string) error {
 		fmt.Printf("Weight: %d\n", value.Weight)
 		fmt.Printf("Stats:\n")
 		for _, stat := range value.Stats {
-			fmt.Printf("-%s: %d\n", stat.Stat.Name, stat.BaseStat)
+			fmt.Printf("- %s: %d\n", stat.Stat.Name, stat.BaseStat)
 		}
 		fmt.Printf("Types:\n")
 		for _, sort := range value.Types {
-			fmt.Printf("-%s\n", sort.Type.Name)
+			fmt.Printf("- %s\n", sort.Type.Name)
 		}
 	}
 	return nil
 }
 
 func commandPokedex(conf *Config, args []string) error {
-	fmt.Print("Display caught pokemon")
+	fmt.Println("Your Pokedex:")
+	if len(conf.Pokedex) == 0 {
+		fmt.Println("You have not caught any pokemon yet, use the catch command to catch some!")
+	} else {
+		for pokemon := range conf.Pokedex {
+			fmt.Printf("- %s\n", pokemon)
+		}
+	}
 	return nil
 }
