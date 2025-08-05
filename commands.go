@@ -99,6 +99,14 @@ func commandCatch(conf *Config, args []string) error {
 }
 
 func commandInspect(conf *Config, args []string) error {
-	fmt.Println("It takes the name of a Pokemon and prints the name, height, weight, stats and type(s) of the Pokemon.")
+	if len(args) == 0 {
+		return errors.New("pokemon name cannot be empty")
+	}
+	value, exists := conf.Pokedex[args[0]]
+	if !exists {
+		fmt.Println("you have not caught that pokemon")
+	} else {
+		fmt.Println(value.Name)
+	}
 	return nil
 }
