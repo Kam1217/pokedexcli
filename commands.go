@@ -97,3 +97,8 @@ func commandCatch(conf *Config, args []string) error {
 	}
 	return nil
 }
+
+func commandInspect(conf *Config, args []string) error {
+	fmt.Println("It takes the name of a Pokemon and prints the name, height, weight, stats and type(s) of the Pokemon.")
+	return nil
+}

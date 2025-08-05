@@ -14,6 +14,19 @@ import (
 type Pokemon struct {
 	Name           string
 	BaseExperience int
+	Height         int
+	Stats          []struct {
+		BaseStat int
+		Stat     struct {
+			Name string
+		}
+	}
+	Types []struct {
+		Type struct {
+			Name string
+		}
+	}
+	Weight int
 }
 
 type Config struct {
@@ -38,6 +51,11 @@ func cleanInput(text string) []string {
 
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
+		"inspect": {
+			name: "inspect",
+			description: "The inspect command takes the name of a Pokemon and prints the name, height, weight, stats and type(s) of the Pokemon",
+			callback: commandInspect,
+		},
 		"catch": {
 			name:        "catch",
 			description: "Catch a specific pokemon by calling 'catch' with the pokemon name",
