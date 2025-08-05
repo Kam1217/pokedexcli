@@ -116,8 +116,13 @@ func commandInspect(conf *Config, args []string) error {
 		fmt.Printf("Name: %s\n", value.Name)
 		fmt.Printf("Height: %d\n", value.Height)
 		fmt.Printf("Weight: %d\n", value.Weight)
+		fmt.Printf("Stats:\n")
 		for _, stat := range value.Stats {
 			fmt.Printf("-%s: %d\n", stat.Stat.Name, stat.BaseStat)
+		}
+		fmt.Printf("Types:\n")
+		for _, sort := range value.Types {
+			fmt.Printf("-%s\n", sort.Type.Name)
 		}
 	}
 	return nil
